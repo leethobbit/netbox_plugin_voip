@@ -3,13 +3,6 @@ import os
 from distutils.util import strtobool
 from packaging import version
 from django.core.exceptions import ImproperlyConfigured
-from .settings import VERSION  # pylint: disable=relative-beyond-top-level
-
-
-NETBOX_RELEASE_CURRENT = version.parse(VERSION)
-NETBOX_RELEASE_28 = version.parse("2.8")
-NETBOX_RELEASE_29 = version.parse("2.9")
-NETBOX_RELEASE_211 = version.parse("2.11")
 
 # Enforce required configuration parameters
 for key in [
@@ -24,27 +17,6 @@ for key in [
 ]:
     if not os.environ.get(key):
         raise ImproperlyConfigured(f"Required environment variable {key} is missing.")
-
-
-def is_truthy(arg):
-    """Convert "truthy" strings into Booleans.
-
-    Examples:
-        >>> is_truthy('yes')
-        True
-    Args:
-        arg (str): Truthy string (True values are y, yes, t, true, on and 1; false values are n, no,
-        f, false, off and 0. Raises ValueError if val is anything else.
-    """
-    if isinstance(arg, bool):
-        return arg
-
-    try:
-        bool_val = strtobool(arg)
-    except ValueError:
-        raise ImproperlyConfigured(f"Unexpected variable value: {arg}")  # pylint: disable=raise-missing-from
-
-    return bool(bool_val)
 
 
 # For reference see http://netbox.readthedocs.io/en/latest/configuration/mandatory-settings/
@@ -89,25 +61,16 @@ REDIS = {
         "PORT": int(os.environ.get("REDIS_PORT", 6379)),
         "PASSWORD": os.environ["REDIS_PASSWORD"],
         "DATABASE": 1,
-        "SSL": is_truthy(os.environ.get("REDIS_SSL", False)),
+        "SSL": os.environ.get("REDIS_SSL", False),
     },
     "tasks": {
         "HOST": os.environ["REDIS_HOST"],
         "PORT": int(os.environ.get("REDIS_PORT", 6379)),
         "PASSWORD": os.environ["REDIS_PASSWORD"],
         "DATABASE": 0,
-        "SSL": is_truthy(os.environ.get("REDIS_SSL", False)),
+        "SSL": os.environ.get("REDIS_SSL", False),
     },
 }
-
-if NETBOX_RELEASE_28 < NETBOX_RELEASE_CURRENT < NETBOX_RELEASE_29:
-    # NetBox 2.8.x Specific Settings
-    REDIS["caching"]["DEFAULT_TIMEOUT"] = 300
-    REDIS["tasks"]["DEFAULT_TIMEOUT"] = 300
-elif NETBOX_RELEASE_CURRENT < NETBOX_RELEASE_211:
-    RQ_DEFAULT_TIMEOUT = 300
-else:
-    raise ImproperlyConfigured(f"Version {NETBOX_RELEASE_CURRENT} of NetBox is unsupported at this time.")
 
 #########################
 #                       #
@@ -139,15 +102,15 @@ CHANGELOG_RETENTION = int(os.environ.get("CHANGELOG_RETENTION", 0))
 # API Cross-Origin Resource Sharing (CORS) settings. If CORS_ORIGIN_ALLOW_ALL is set to True, all origins will be
 # allowed. Otherwise, define a list of allowed origins using either CORS_ORIGIN_WHITELIST or
 # CORS_ORIGIN_REGEX_WHITELIST. For more information, see https://github.com/ottoyiu/django-cors-headers
-CORS_ORIGIN_ALLOW_ALL = is_truthy(os.environ.get("CORS_ORIGIN_ALLOW_ALL", False))
+CORS_ORIGIN_ALLOW_ALL = os.environ.get("CORS_ORIGIN_ALLOW_ALL", False)
 CORS_ORIGIN_WHITELIST = []
 CORS_ORIGIN_REGEX_WHITELIST = []
 
 # Set to True to enable server debugging. WARNING: Debugging introduces a substantial performance penalty and may reveal
 # sensitive information about your installation. Only enable debugging while performing testing. Never enable debugging
 # on a production system.
-DEBUG = is_truthy(os.environ.get("DEBUG", False))
-DEVELOPER = is_truthy(os.environ.get("DEVELOPER", False))
+DEBUG = os.environ.get("DEBUG", False)
+DEVELOPER = os.environ.get("DEVELOPER", False)
 
 # Email settings
 EMAIL = {
@@ -162,7 +125,7 @@ EMAIL = {
 # Enforcement of unique IP space can be toggled on a per-VRF basis.
 # To enforce unique IP space within the global table (all prefixes and IP addresses not assigned to a VRF),
 # set ENFORCE_GLOBAL_UNIQUE to True.
-ENFORCE_GLOBAL_UNIQUE = is_truthy(os.environ.get("ENFORCE_GLOBAL_UNIQUE", False))
+ENFORCE_GLOBAL_UNIQUE = os.environ.get("ENFORCE_GLOBAL_UNIQUE", False)
 
 # HTTP proxies NetBox should use when sending outbound HTTP requests (e.g. for webhooks).
 # HTTP_PROXIES = {
@@ -194,10 +157,10 @@ LOGGING = {
 
 # Setting this to True will permit only authenticated users to access any part of NetBox. By default, anonymous users
 # are permitted to access most data in NetBox (excluding secrets) but not make any changes.
-LOGIN_REQUIRED = is_truthy(os.environ.get("LOGIN_REQUIRED", False))
+LOGIN_REQUIRED = os.environ.get("LOGIN_REQUIRED", False)
 
 # Setting this to True will display a "maintenance mode" banner at the top of every page.
-MAINTENANCE_MODE = is_truthy(os.environ.get("MAINTENANCE_MODE", False))
+MAINTENANCE_MODE = os.environ.get("MAINTENANCE_MODE", False)
 
 # An API consumer can request an arbitrary number of objects =by appending the "limit" parameter to the URL (e.g.
 # "?limit=1000"). This setting defines the maximum limit. Setting it to 0 or None will allow an API consumer to request
@@ -228,31 +191,21 @@ NAPALM_ARGS = {
 PAGINATE_COUNT = int(os.environ.get("PAGINATE_COUNT", 50))
 
 # Enable installed plugins. Add the name of each plugin to the list.
-PLUGINS = ["netbox_onboarding"]
+PLUGINS = ["netbox_plugin_voip"]
 
 # Plugins configuration settings. These settings are used by various plugins that the user may have installed.
 # Each key in the dictionary is the name of an installed plugin and its value is a dictionary of settings.
-PLUGINS_CONFIG = {}
+PLUGINS_CONFIG = {"netbox_plugin_voip": {}}
 
 # When determining the primary IP address for a device, IPv6 is preferred over IPv4 by default. Set this to True to
 # prefer IPv4 instead.
-PREFER_IPV4 = is_truthy(os.environ.get("PREFER_IPV4", False))
+PREFER_IPV4 = os.environ.get("PREFER_IPV4", False)
 
 # Remote authentication support
 REMOTE_AUTH_ENABLED = False
 REMOTE_AUTH_HEADER = "HTTP_REMOTE_USER"
 REMOTE_AUTH_AUTO_CREATE_USER = True
 REMOTE_AUTH_DEFAULT_GROUPS = []
-
-if NETBOX_RELEASE_28 < NETBOX_RELEASE_CURRENT < NETBOX_RELEASE_29:
-    # NetBox 2.8.x Specific Settings
-    REMOTE_AUTH_BACKEND = "utilities.auth_backends.RemoteUserBackend"
-    REMOTE_AUTH_DEFAULT_PERMISSIONS = []
-elif NETBOX_RELEASE_CURRENT < NETBOX_RELEASE_211:
-    REMOTE_AUTH_BACKEND = "netbox.authentication.RemoteUserBackend"
-    REMOTE_AUTH_DEFAULT_PERMISSIONS = {}
-else:
-    raise ImproperlyConfigured(f"Version {NETBOX_RELEASE_CURRENT} of NetBox is unsupported at this time.")
 
 # This determines how often the GitHub API is called to check the latest release of NetBox. Must be at least 1 hour.
 RELEASE_CHECK_TIMEOUT = 24 * 3600

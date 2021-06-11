@@ -23,7 +23,7 @@ NAME = os.getenv("IMAGE_NAME", "netbox_plugin_voip")
 PWD = os.getcwd()
 
 COMPOSE_FILE = "development/docker-compose.yml"
-BUILD_NAME = "netbox_onboarding"
+BUILD_NAME = "netbox_plugin_voip"
 
 
 # ------------------------------------------------------------------------------
