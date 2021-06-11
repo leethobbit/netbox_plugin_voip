@@ -9,4 +9,5 @@ This VOIP plugin is being created for two main reasons:
 
 ## Helpful Resources
 [Plugin Development Blog](https://ttl255.com/developing-netbox-plugin-part-1-setup-and-initial-build/)
+
 [NetBox Plugin Development Page](https://netbox.readthedocs.io/en/stable/plugins/development/)
