@@ -12,3 +12,12 @@ menu_items = (
     ),
 )
 """
+from extras.plugins import PluginMenuItem
+
+
+menu_items = (
+    PluginMenuItem(
+        link="plugins:netbox_plugin_voip:netbox_plugin_voip",
+        link_text="Voice Plugin",
+    ),
+)
