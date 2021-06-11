@@ -1,6 +1,6 @@
-# NetBox Plugin Skeleton
-The skeleton for [Netbox](https://github.com/netbox-community/netbox) plugin.  
-Basically, it's a Django app skeleton, which contains all necessary (and unnecessary) files for building a new plugin.
+# NetBox VOIP Plugin
+This is a VOIP plugin for [Netbox](https://github.com/netbox-community/netbox).
+Based on the Django app skeleton that can be found [Here](https://github.com/k01ek/netbox-plugin-skeleton).
 
 ## Instructions
 ### Download repository
