@@ -3,7 +3,7 @@ from django.urls import path
 
 
 def dummy_view(request):
-    html = "<html><body>Voice Plugin</body></html>"
+    html = "<html><body>Call Routing</body></html>"
     return HttpResponse(html)
 
 
