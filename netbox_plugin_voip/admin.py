@@ -7,4 +7,3 @@ import .models
 class MyModel1Admin(admin.ModelAdmin):
     fields = '__all__'
 """
-#Testing git
