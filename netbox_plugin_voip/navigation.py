@@ -17,7 +17,8 @@ from extras.plugins import PluginMenuItem
 
 menu_items = (
     PluginMenuItem(
-        link="plugins:netbox_plugin_voip:netbox_plugin_voip",
+        # This is looked up in urls.py
+        link="plugins:netbox_plugin_voip:voice-main-page",
         link_text="Voice Plugin",
     ),
 )

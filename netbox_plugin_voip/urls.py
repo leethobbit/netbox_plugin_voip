@@ -6,7 +6,7 @@ def dummy_view(request):
     html = "<html><body>Call Routing</body></html>"
     return HttpResponse(html)
 
-
+# These urlpatterns are referenced in navigation.py
 urlpatterns = [
-    path("", dummy_view, name="netbox_plugin_voip"),
+    path("", dummy_view, name="voice-main-page"),
 ]
