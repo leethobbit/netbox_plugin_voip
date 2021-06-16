@@ -9,7 +9,6 @@ from dcim.fields import ASNField
 from extras.models import ChangeLoggedModel
 from ipam.fields import IPAddressField
 from utilities.querysets import RestrictedQuerySet
->>>>>>> parent of 85c3263 (Model for DID seems OK, issue with "invoke makemigrations")
 
 number_validator = RegexValidator(
     r"^\+?[0-9A-D\#\*]*$",
