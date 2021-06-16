@@ -3,11 +3,20 @@ from django.core.validators import RegexValidator
 from django.db.models.deletion import SET_NULL
 from django.urls import reverse
 
+<<<<<<< HEAD
 # nb is a renamed netbox src folder
 from .nb.netbox.models import PrimaryModel 
 from .extras.utils import extras_features
 from .nb.netbox.models import ChangeLoggedModel
 from .nb.utilities.querysets import RestrictedQuerySet
+=======
+from netbox.models import NestedGroupModel, PrimaryModel 
+from extras.utils import extras_features
+from dcim.fields import ASNField
+from extras.models import ChangeLoggedModel
+from ipam.fields import IPAddressField
+from utilities.querysets import RestrictedQuerySet
+>>>>>>> parent of 85c3263 (Model for DID seems OK, issue with "invoke makemigrations")
 
 number_validator = RegexValidator(
     r"^\+?[0-9A-D\#\*]*$",
@@ -32,12 +41,12 @@ class DIDNumbers(ChangeLoggedModel):
     did = models.CharField(max_length=32, validators=[number_validator])
     description = models.CharField(max_length=200, blank=True)
     provider = models.ForeignKey(to="circuits.Provider",on_delete=models.SET_NULL,blank=True,null=True,related_name="provider_set")
-    partition = models.ForeignKey(to="netbox_plugin_voip.Partition",on_delete=models.SET_NULL,blank=True,null=True)
+    partition = models.ForeignKey(to="models.Partition",on_delete=models.SET_NULL,blank=True,null=True)
     route_option = models.BooleanField(blank=True,null=True)
-    called_party_mask = models.IntegerField(blank=True,null=True)
+    called_party_mask = models.IntegerField(max_length=6,blank=True,null=True)
 
     class Meta:
-        unique_together = ("did","partition",)
+        unique_together = ("number","tenant",)
 
 
 @extras_features('custom_fields', 'custom_links', 'export_templates', 'tags', 'webhooks')
