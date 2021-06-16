@@ -3,12 +3,11 @@ from django.core.validators import RegexValidator
 from django.db.models.deletion import SET_NULL
 from django.urls import reverse
 
-from nb.models import NestedGroupModel, PrimaryModel 
-from extras.utils import extras_features
-from dcim.fields import ASNField
-from nb.models import ChangeLoggedModel
-from ipam.fields import IPAddressField
-from utilities.querysets import RestrictedQuerySet
+# nb is a renamed netbox src folder
+from .nb.netbox.models import PrimaryModel 
+from .extras.utils import extras_features
+from .nb.netbox.models import ChangeLoggedModel
+from .nb.utilities.querysets import RestrictedQuerySet
 
 number_validator = RegexValidator(
     r"^\+?[0-9A-D\#\*]*$",

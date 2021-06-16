@@ -1,4 +1,4 @@
-from extras.plugins import PluginConfig
+from .extras.plugins import PluginConfig
 from .version import __version__
 
 
@@ -9,6 +9,7 @@ class VoicePluginConfig(PluginConfig):
     version = __version__
     author = 'Dan King'
     author_email = 'test@test.com'
+    base_url = "voice-plugin"
     required_settings = []
     default_settings = {}
 
