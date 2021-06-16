@@ -3,10 +3,10 @@ from django.core.validators import RegexValidator
 from django.db.models.deletion import SET_NULL
 from django.urls import reverse
 
-from netbox.models import NestedGroupModel, PrimaryModel 
+from nb.models import NestedGroupModel, PrimaryModel 
 from extras.utils import extras_features
 from dcim.fields import ASNField
-from netbox.models import ChangeLoggedModel
+from nb.models import ChangeLoggedModel
 from ipam.fields import IPAddressField
 from utilities.querysets import RestrictedQuerySet
 
