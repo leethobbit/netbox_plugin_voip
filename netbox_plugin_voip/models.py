@@ -31,54 +31,56 @@ class DIDNumbers(ChangeLoggedModel):
     did = models.CharField(max_length=32,validators=[number_validator])
     description = models.CharField(max_length=200, blank=True)
     provider = models.ForeignKey(to="circuits.Provider",on_delete=models.SET_NULL,blank=True,null=True,related_name="provider_set")
-    partition = models.ForeignKey(to="netbox_plugin_voip.Partition",on_delete=models.CASCADE,blank=True,null=True)
+    partition = models.CharField(max_length=200,blank=True)
     route_option = models.BooleanField(blank=True,null=True)
     called_party_mask = models.IntegerField(blank=True,null=True)
 
     class Meta:
         unique_together = ("did","partition",)
-
-
-@extras_features('custom_fields', 'custom_links', 'export_templates', 'tags', 'webhooks')
-class Partition(PrimaryModel):
-    """
-    A Partition represents an Route Partition served by the NetBox owner.
-    """
-    name = models.CharField(
-        max_length=100,
-        unique=True
-    )
-    slug = models.SlugField(
-        max_length=100,
-        unique=True
-    )
-    description = models.CharField(
-        max_length=200,
-        blank=True
-    )
-    comments = models.TextField(
-        blank=True
-    )
-
+    
     objects = RestrictedQuerySet.as_manager()
 
-    csv_headers = ['name', 'slug', 'description', 'comments']
-    clone_fields = ['description']
 
-    class Meta:
-        ordering = ['name']
+# @extras_features('custom_fields', 'custom_links', 'export_templates', 'tags', 'webhooks')
+# class RoutePartition(PrimaryModel):
+#     """
+#     A Partition represents a Route Partition served by the NetBox owner.
+#     """
+#     name = models.CharField(
+#         max_length=100,
+#         unique=True
+#     )
+#     slug = models.SlugField(
+#         max_length=100,
+#         unique=True
+#     )
+#     description = models.CharField(
+#         max_length=200,
+#         blank=True
+#     )
+#     comments = models.TextField(
+#         blank=True
+#     )
 
-    def __str__(self):
-        return self.name
+#     objects = RestrictedQuerySet.as_manager()
 
-    # def get_absolute_url(self):
-    #     return reverse('voipview', args=[self.pk])
+#     csv_headers = ['name', 'slug', 'description', 'comments']
+#     clone_fields = ['description']
 
-    def to_csv(self):
-        return (
-            self.name,
-            self.slug,
-            self.description,
-            self.comments,
-        )
+#     class Meta:
+#         ordering = ['name']
+
+#     def __str__(self):
+#         return self.name
+
+#     # def get_absolute_url(self):
+#     #     return reverse('voipview', args=[self.pk])
+
+#     def to_csv(self):
+#         return (
+#             self.name,
+#             self.slug,
+#             self.description,
+#             self.comments,
+#         )
 
