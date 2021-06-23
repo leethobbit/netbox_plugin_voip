@@ -11,4 +11,4 @@ from .models import DIDNumbers
 
 @admin.register(DIDNumbers)
 class DIDVoipAdmin(admin.ModelAdmin):
-    list_display = ("did", "description","provider","route_option","partition","called_party_mask")
+    list_display = ("did", "description","provider","route_option","tenant","called_party_mask")
