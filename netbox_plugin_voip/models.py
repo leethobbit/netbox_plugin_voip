@@ -31,7 +31,7 @@ class DIDNumbers(ChangeLoggedModel):
     did = models.CharField(max_length=32,validators=[number_validator])
     description = models.CharField(max_length=200, blank=True)
     provider = models.ForeignKey(to="circuits.Provider",on_delete=models.SET_NULL,blank=True,null=True,related_name="provider_set")
-    partition = models.ForeignKey(to="netbox_plugin_voip.Partition",on_delete=models.CASCADE,blank=False,null=False)
+    partition = models.ForeignKey(to="netbox_plugin_voip.Partition",on_delete=models.CASCADE,blank=True,null=True)
     route_option = models.BooleanField(blank=True,null=True)
     called_party_mask = models.IntegerField(blank=True,null=True)
 
