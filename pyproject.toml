@@ -4,6 +4,9 @@ version = "0.1.0"
 description = "NetBox Voice Plugin"
 authors = ["leethobbitlabs <dking8921@gmail.com>"]
 license = "Apache-2.0"
+packages = [
+    { include = "netbox_plugin_voip" },
+]
 
 [tool.poetry.dependencies]
 python = "^3.8"
