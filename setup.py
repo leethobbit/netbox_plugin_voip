@@ -24,14 +24,14 @@ def get_version(rel_path):
 
 
 setup(
-    name='',
+    name='netbox_plugin_voip',
     version=get_version('netbox_plugin_voip/version.py'),
-    description='',
+    description='VOIP management plugin for NetBox',
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url='',
-    author='',
-    author_email='',
+    url='https://github.com/leethobbit/netbox_plugin_voip',
+    author='Dan King',
+    author_email='king@cityofmentor.com',
     install_requires=[],
     packages=find_packages(),
     include_package_data=True,
