@@ -3,11 +3,9 @@ from django.core.validators import RegexValidator
 from django.db.models.deletion import SET_NULL
 from django.urls import reverse
 
-from netbox.models import NestedGroupModel, PrimaryModel 
+from netbox.models import PrimaryModel 
 from extras.utils import extras_features
-from dcim.fields import ASNField
 from netbox.models import ChangeLoggedModel
-from ipam.fields import IPAddressField
 from utilities.querysets import RestrictedQuerySet
 
 number_validator = RegexValidator(
@@ -33,54 +31,54 @@ class DIDNumbers(ChangeLoggedModel):
     did = models.CharField(max_length=32,validators=[number_validator])
     description = models.CharField(max_length=200, blank=True)
     provider = models.ForeignKey(to="circuits.Provider",on_delete=models.SET_NULL,blank=True,null=True,related_name="provider_set")
-    partition = models.ForeignKey(to="netbox_plugin_voip.Partition",on_delete=models.SET_NULL,blank=True,null=True)
+    tenant = models.ForeignKey(to="tenancy.tenant",on_delete=models.CASCADE,blank=False,null=False)
     route_option = models.BooleanField(blank=True,null=True)
     called_party_mask = models.IntegerField(blank=True,null=True)
 
     class Meta:
-        unique_together = ("did","partition",)
+        unique_together = ("did","tenant",)
 
 
-@extras_features('custom_fields', 'custom_links', 'export_templates', 'tags', 'webhooks')
-class Partition(PrimaryModel):
-    """
-    A Partition represents an Route Partition served by the NetBox owner.
-    """
-    name = models.CharField(
-        max_length=100,
-        unique=True
-    )
-    slug = models.SlugField(
-        max_length=100,
-        unique=True
-    )
-    description = models.CharField(
-        max_length=200,
-        blank=True
-    )
-    comments = models.TextField(
-        blank=True
-    )
+# @extras_features('custom_fields', 'custom_links', 'export_templates', 'tags', 'webhooks')
+# class Partition(PrimaryModel):
+#     """
+#     A Partition represents an Route Partition served by the NetBox owner.
+#     """
+#     name = models.CharField(
+#         max_length=100,
+#         unique=True
+#     )
+#     slug = models.SlugField(
+#         max_length=100,
+#         unique=True
+#     )
+#     description = models.CharField(
+#         max_length=200,
+#         blank=True
+#     )
+#     comments = models.TextField(
+#         blank=True
+#     )
 
-    objects = RestrictedQuerySet.as_manager()
+#     objects = RestrictedQuerySet.as_manager()
 
-    csv_headers = ['name', 'slug', 'description', 'comments']
-    clone_fields = ['description']
+#     csv_headers = ['name', 'slug', 'description', 'comments']
+#     clone_fields = ['description']
 
-    class Meta:
-        ordering = ['name']
+#     class Meta:
+#         ordering = ['name']
 
-    def __str__(self):
-        return self.name
+#     def __str__(self):
+#         return self.name
 
-    def get_absolute_url(self):
-        return reverse('tenancy:tenant', args=[self.pk])
+#     def get_absolute_url(self):
+#         return reverse('tenancy:tenant', args=[self.pk])
 
-    def to_csv(self):
-        return (
-            self.name,
-            self.slug,
-            self.description,
-            self.comments,
-        )
+#     def to_csv(self):
+#         return (
+#             self.name,
+#             self.slug,
+#             self.description,
+#             self.comments,
+#         )
 
