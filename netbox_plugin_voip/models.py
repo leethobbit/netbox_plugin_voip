@@ -71,8 +71,8 @@ class Partition(PrimaryModel):
     def __str__(self):
         return self.name
 
-    def get_absolute_url(self):
-        return reverse('voipview', args=[self.pk])
+    # def get_absolute_url(self):
+    #     return reverse('voipview', args=[self.pk])
 
     def to_csv(self):
         return (
