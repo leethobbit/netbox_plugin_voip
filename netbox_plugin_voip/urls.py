@@ -1,4 +1,4 @@
-from netbox_plugin_voip.views import PartitionView, VOIPView
+from netbox_plugin_voip.views import VOIPView
 from django.http import HttpResponse
 from django.urls import path
 
