@@ -1,6 +1,8 @@
 # NetBox VOIP Plugin
-This is a VOIP plugin for [Netbox](https://github.com/netbox-community/netbox).
+This was a work-in-progress VOIP plugin for [Netbox](https://github.com/netbox-community/netbox).
 Based on the Django app skeleton that can be found [here](https://github.com/k01ek/netbox-plugin-skeleton).
+
+NOTE: I have not completed this plugin, and it is only partially functional.
 
 ## The Purpose of this Plugin
 This VOIP plugin is being created for two main reasons:
